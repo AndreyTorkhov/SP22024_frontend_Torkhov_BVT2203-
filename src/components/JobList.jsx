@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from "react";
 import JobCard from "./JobCard";
-import { getJobs, getJobsWithSalary } from "../Apis/network";
+import { getJobs, getJobsWithSalary, getAccreditedJobs } from "../Apis/network";
 
-const JobList = ({ filterBySalary, sortOrder, selectedEmployers }) => {
+const JobList = ({
+  filterBySalary,
+  sortOrder,
+  selectedEmployers,
+  filterByAccredited,
+  selectedSchedules,
+}) => {
   const [jobs, setJobs] = useState([]);
 
   useEffect(() => {
@@ -14,15 +20,20 @@ const JobList = ({ filterBySalary, sortOrder, selectedEmployers }) => {
         fetchedJobs = await getJobs();
       }
 
+      if (filterByAccredited) {
+        fetchedJobs = await getAccreditedJobs(true);
+      }
+
       if (selectedEmployers.length > 0) {
         fetchedJobs = fetchedJobs.filter((job) =>
           selectedEmployers.includes(job.employer)
         );
-        fetchedJobs.sort((a, b) => {
-          const aIndex = selectedEmployers.indexOf(a.employer);
-          const bIndex = selectedEmployers.indexOf(b.employer);
-          return aIndex - bIndex;
-        });
+      }
+
+      if (selectedSchedules.length > 0) {
+        fetchedJobs = fetchedJobs.filter((job) =>
+          selectedSchedules.includes(job.schedule_name)
+        );
       }
 
       if (sortOrder) {
@@ -35,7 +46,13 @@ const JobList = ({ filterBySalary, sortOrder, selectedEmployers }) => {
     };
 
     fetchJobs();
-  }, [filterBySalary, sortOrder, selectedEmployers]);
+  }, [
+    filterBySalary,
+    sortOrder,
+    selectedEmployers,
+    filterByAccredited,
+    selectedSchedules,
+  ]);
 
   return (
     <div>

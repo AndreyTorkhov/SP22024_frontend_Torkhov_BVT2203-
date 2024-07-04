@@ -7,6 +7,8 @@ const HomePage = () => {
   const [filterBySalary, setFilterBySalary] = useState(false);
   const [sortOrder, setSortOrder] = useState(null);
   const [selectedEmployers, setSelectedEmployers] = useState([]);
+  const [filterByAccredited, setFilterByAccredited] = useState(false);
+  const [selectedSchedules, setSelectedSchedules] = useState([]);
 
   return (
     <div className="container">
@@ -16,12 +18,18 @@ const HomePage = () => {
         setFilterBySalary={setFilterBySalary}
         selectedEmployers={selectedEmployers}
         setSelectedEmployers={setSelectedEmployers}
+        filterByAccredited={filterByAccredited}
+        setFilterByAccredited={setFilterByAccredited}
+        selectedSchedules={selectedSchedules}
+        setSelectedSchedules={setSelectedSchedules}
       />
       <SortButton sortOrder={sortOrder} setSortOrder={setSortOrder} />
       <JobList
         filterBySalary={filterBySalary}
         sortOrder={sortOrder}
         selectedEmployers={selectedEmployers}
+        filterByAccredited={filterByAccredited}
+        selectedSchedules={selectedSchedules}
       />
     </div>
   );
